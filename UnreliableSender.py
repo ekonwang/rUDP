@@ -35,6 +35,7 @@ class UnreliableSender(BasicSender.BasicSender):
             print("sent: %s" % packet)
 
             response = self.receive()
+            response = response.decode()
             self.handle_response(response)
 
             msg = next_msg
@@ -57,7 +58,7 @@ if __name__ == "__main__":
 
     try:
         opts, args = getopt.getopt(sys.argv[1:],
-                               "f:p:a:", ["file=", "port=", "address="])
+                               "f:p:a:d", ["file=", "port=", "address=", "debug="])
     except:
         usage()
         exit()
@@ -65,6 +66,7 @@ if __name__ == "__main__":
     port = 33122
     dest = "localhost"
     filename = None
+    debug = False
 
     for o,a in opts:
         if o in ("-f", "--file="):
@@ -73,8 +75,10 @@ if __name__ == "__main__":
             port = int(a)
         elif o in ("-a", "--address="):
             dest = a
+        elif o in ("-d", "--debug"):
+            debug = True
 
-    s = UnreliableSender(dest,port,filename)
+    s = UnreliableSender(dest,port,filename,debug)
     try:
         s.start()
     except (KeyboardInterrupt, SystemExit):

@@ -100,7 +100,7 @@ class Forwarder(object):
     def _send(self, packet):
         """ Send a packet. """
         packet.update_packet(seqno=packet.seqno + self.start_seqno_base, update_checksum=False)
-        self.sock.sendto(packet.full_packet, packet.address)
+        self.sock.sendto(packet.full_packet.encode(), packet.address)
 
     def register_test(self, testcase, input_file):
         assert isinstance(testcase, BasicTest.BasicTest)
@@ -114,7 +114,7 @@ class Forwarder(object):
                 self.start(input_file)
             except (KeyboardInterrupt, SystemExit):
                 exit()
-            except:
+            except Exception as e:
                 print("Test fail")
             time.sleep(1)
 
@@ -190,6 +190,7 @@ class Forwarder(object):
             while sender.poll() is None:
                 try:
                     message, address = self.sock.recvfrom(4096)
+                    message = message.decode()
                     self.handle_receive(message, address, self.current_test.sackMode)
                 except socket.timeout:
                     pass

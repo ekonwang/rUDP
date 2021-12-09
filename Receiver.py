@@ -170,13 +170,15 @@ class Receiver():
         if self.debug:
             print("Receiver.py: clean up time")
         now = time.time()
+        new_connections = self.connections.copy()
         for address in self.connections.keys():
             conn = self.connections[address]
             if now - conn.updated > self.timeout:
                 if self.debug:
                     print("Receiver.py: killed connection to %s (%.2f old)" % (address, now - conn.updated))
                 conn.end()
-                del self.connections[address]
+                del new_connections[address]
+        self.connections = new_connections
         self.last_cleanup = now
 
 if __name__ == "__main__":

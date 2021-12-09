@@ -41,6 +41,7 @@ class InteractiveSender(BasicSender.BasicSender):
             print("sent: %s" % packet)
 
             response = self.receive()
+            response = response.decode()
             self.handle_response(response)
 
             seqno += 1
