@@ -69,7 +69,7 @@ class Sender(BasicSender.BasicSender):
         time_stamp = time.time()
         if self.sack:
             self.send(self.window[0][0])
-            print('sack resend: %s', self.window[0][0])
+            print('sack resend: %s', self.window[0][0][0:20])
             self.window[0][2] = time_stamp
         else:
             for elem_index in range(len(self.window)):                          # gbn
@@ -78,16 +78,18 @@ class Sender(BasicSender.BasicSender):
                     print('GBN resend: %s', self.window[elem_index][0][0:20])
                     self.window[elem_index][2] = time_stamp
 
-    def handle_resp(self, recv : str):
+    def handle_resp(self, recv):
         if Checksum.validate_checksum(recv):
             print("recv: %s" % recv)
             pieces = recv.split('|')
-            ack = int(pieces[1])
+            ack = pieces[1]
             self.handle_ack(ack)
         else:
             print("recv: %s <--- CHECKSUM FAILED" % recv)
 
     def handle_ack(self, ack):
+        pieces = ack.split(';')
+        ack = int(pieces[0])
         assert(ack <= self.expected_ack + 5)
         ack_num = ack - self.expected_ack
         while(ack_num > 0):
