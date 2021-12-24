@@ -5,7 +5,7 @@ import subprocess
 import time
 
 import Checksum
-from tests import BasicTest
+from tests import BasicTest, SackOutOfOrderTest
 
 """
 Add the tests you want to run here.
@@ -15,10 +15,16 @@ you want to run. The tests automatically register themselves with the
 forwarder, so they will magically be run.
 """
 def tests_to_run(forwarder):
-    from tests import BasicTest, RandomDropTest, SackRandomDropTest
+    from tests import BasicTest, RandomDropTest, SackRandomDropTest, OutOfOrderTest, SackOutOfOrderTest, DupPacketTest, SackDupPacketTest
     BasicTest.BasicTest(forwarder, "README")
     RandomDropTest.RandomDropTest(forwarder, "README")
     SackRandomDropTest.SackRandomDropTest(forwarder, "README")
+    OutOfOrderTest.OutOfOrderTest(forwarder, "README")
+    SackOutOfOrderTest.SackOutOfOrderTest(forwarder, "README")
+    DupPacketTest.DupPacketTest(forwarder, "README")
+    SackDupPacketTest.SackDupPacketTest(forwarder, "README")
+    DupPacketTest.DupPacketTest(forwarder, "README", [2, 4, 5])
+
 """
 Testing is divided into two pieces: this forwarder and a set of test cases in
 the tests directory.
