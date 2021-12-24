@@ -13,7 +13,7 @@ class Sender(BasicSender.BasicSender):
     def __init__(self, dest, port, filename, debug=False, sackMode=False):
         super(Sender, self).__init__(dest, port, filename, debug)
         self.randstart = 0
-        self.timeout = 0.5
+        self.timeout = 0.005
         self.sack = sackMode
         self.MAX_WDN = 5        # send window size.
         self.window = []        # store list of [package, ack_times, last_sent_timestamp].

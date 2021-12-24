@@ -19,7 +19,7 @@ class SackDupPacketTest(BasicTest):
         if not lost_packets:
             self.lost_packets = []
             self.indicated = False
-            self.checked_seqno = set()
+            self.certified_seqno = set()
         else:
             print("lost packets:", lost_packets)
             self.lost_packets = lost_packets
@@ -34,10 +34,10 @@ class SackDupPacketTest(BasicTest):
                 self.handle_lost(p)
         else:
             for p in self.forwarder.in_queue:
-                if p.seqno in self.checked_seqno:
+                if p.seqno in self.certified_seqno:
                     self.handle_lost(p)
                 else:
-                    self.checked_seqno.add(p.seqno)
+                    self.certified_seqno.add(p.seqno)
                     if random.random() < self.lost_rate:
                         print("lost packet:", p.seqno)
                         self.lost_packets.append(p.seqno)
