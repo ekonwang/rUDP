@@ -1,6 +1,10 @@
 In this folder you'll find the sample receiver, code for computing and
 validating checksums, as well as example sender code.
 
+Running environment
+===============================
+MacOS X, python3.9
+
 Quick! What do I have to write?
 ===============================
 Sender.py is the file in which you will implement your reliable sender.
